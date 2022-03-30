@@ -2,6 +2,7 @@ package pl.edu.pjatk;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -31,8 +32,8 @@ public class Main {
 
         List<Flower> trainingSet = dataProvider.extractDataWithSpecies(dataProvider.getTrainingFile());
         List<Flower> testingSet = dataProvider.extractDataWithSpecies(dataProvider.getTestingFile());
-
-        Prediction.predict(testingSet, trainingSet, k, true);
+        HashMap<String, Integer> mapOfSpeciesToCount = dataProvider.getMapOfSpeciesToCount();
+        Prediction.predict(testingSet, trainingSet, k, true, dataProvider);
 
         System.out.println("Jeśli chcesz wprowadzic samemu dane kwiata wpisz t/T jesli nie, wcisnij dowolny klawisz");
         boolean answer = readKey();
@@ -63,7 +64,7 @@ public class Main {
             checkFlower.add(new Flower(flowerMeasurement));
             System.out.println("Podaj k:");
             k = scanner.nextInt();
-            Prediction.predict(checkFlower, trainingSet, k, false);
+            Prediction.predict(checkFlower, trainingSet, k, false, dataProvider);
 
             System.out.println("Czy chcesz jeszcze raz? (wcisij t)");
             answer = readKey();

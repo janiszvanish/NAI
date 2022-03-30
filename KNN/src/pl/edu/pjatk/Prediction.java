@@ -5,19 +5,20 @@ import java.util.stream.Collectors;
 
 public class Prediction {
 
-    public static void predict(List<Flower> testingSet, List<Flower> trainingSet, int k, boolean flag) {
+    public static void predict(List<Flower> testingSet, List<Flower> trainingSet, int k, boolean flag,
+                               DataProvider dataProvider) {
         String prediction = "";
         double testListSize = testingSet.size();
         double numberOfGoodGuessed = testListSize;
 
         List<Vector> vectors;
         Vector vector;
+        HashMap<String, Integer> mapOfSpeciesToCount = dataProvider.getMapOfSpeciesToCount();
         for (Flower testing : testingSet) {
             vectors = new ArrayList<>();
-            //System.out.println("Testowy kwiatek\n" + testing);
-            int numberOfSetosa = 0;
-            int numberOfVirginica = 0;
-            int numberOfVersicolor = 0;
+            System.out.println("Testowy kwiatek\n" + testing);
+
+            mapOfSpeciesToCount = dataProvider.makeEvryValue0(mapOfSpeciesToCount);
 
             for (Flower training : trainingSet) {
                 vector = new Vector(Vector.calcDistanceBetweenFlowers(training, testing), training.getSpecies());
@@ -28,24 +29,24 @@ public class Prediction {
             vectors = vectors.stream().limit(k).collect(Collectors.toList());
 
             for (Vector v : vectors) {
-                //System.out.println(v);
-                if (v.getSpecies().equals("Iris-virginica"))
-                    numberOfVirginica++;
-                else if (v.getSpecies().equals("Iris-versicolor"))
-                    numberOfVersicolor++;
-                else
-                    numberOfSetosa++;
+                int value = mapOfSpeciesToCount.get(v.getSpecies());
+                value++;
+                mapOfSpeciesToCount.replace(v.getSpecies(), value);
+
             }
 
-            if (numberOfVersicolor >= numberOfSetosa && numberOfVersicolor >= numberOfVirginica)
-                prediction = "Iris-versicolor";
-            else if (numberOfSetosa >= numberOfVirginica && numberOfSetosa >= numberOfVirginica)
-                prediction = "Iris-setosa";
-            else
-                prediction = "Iris-virginica";
+            System.out.println(k + " najblizszych sasiadow " + mapOfSpeciesToCount);
 
+            int maxValue = 0;
+
+            for(String s : mapOfSpeciesToCount.keySet()){
+                if(mapOfSpeciesToCount.get(s).intValue() >= maxValue){
+                    prediction = s;
+                    maxValue = mapOfSpeciesToCount.get(s).intValue();
+                }
+            }
             if (!prediction.equals(testing.getSpecies()))
-                numberOfGoodGuessed--;
+                    numberOfGoodGuessed--;
 
             System.out.println("Predicted species: " + prediction + "\n");
         }
@@ -54,4 +55,6 @@ public class Prediction {
         }
 
     }
+
+
 }
