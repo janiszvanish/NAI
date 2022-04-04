@@ -5,6 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+/*
+*
+*           example1 nie jest liniowo separowalny, ciężko o lepszą dokładność niż 70-75%
+*           reszta przy kozystnym wylosowaniu wag jest w stanie nauczyc się do 98% dokladnosci
+*
+* */
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -49,6 +55,9 @@ public class Main {
                     break;
                 default:
                     System.out.println("Podales bledna opcje");
+                    System.out.println("Podaj nowy wybór");
+                    choice = scanner.nextInt();
+                    break;
             }
         }
 
@@ -68,8 +77,22 @@ public class Main {
         HashMap<Double[], String> testingSet = dataProvider.extractData(dataProvider.getTestingFile());
 
         Perceptron perceptron = new Perceptron(alpha, theta, trainingSet, weights);
+        dataProvider.seeVector(testingSet);
+        flag = perceptron.train(expectedAccuracy);
+        System.out.println(perceptron);
+        if(!flag){
+            System.out.println("Nie udalo sie wytrenowac perceptronu :(");
+            System.exit(0);
+        }
+        System.out.println("Yupiiiii udało się wytrenować perceptron!");
 
-        perceptron.train(expectedAccuracy);
+        System.out.println("Podaj dokladnosc jaka oczekujesz od perceptronu");
+        expectedAccuracy = scanner.nextDouble();
+
+        perceptron.setVectorXWithAnswer(testingSet);
+        perceptron.test();
+        System.out.println(perceptron);
+
 
     }
 }
