@@ -1,0 +1,76 @@
+private int learn(){
+        int numberOfGoodPredictions = 0;
+        for(TreeMap<Character, Double> tm: vectorXWithAnswer.keySet()){
+            int counter = 0;
+            Double [] vector = new Double[tm.size()];
+            for(Character character : tm.keySet()){
+                vector[counter++] = tm.get(character);
+            }
+            int y = scalar(vector);
+            int d = vectorXWithAnswer.get(tm).equals(language) ? 1 : 0;
+            if(y != d){
+                if(d == 1)
+                    theta -= (theta * 0.01);
+                else
+                    theta += (theta * 0.01);
+            }else
+                numberOfGoodPredictions++;
+
+            for(int i = 0; i < weights.length; i++){
+                weights[i] += (d - y) * alpha * vector[i];
+            }
+            //lengthOfWeightVectorToOne();
+        }
+        return numberOfGoodPredictions;
+    }
+    public boolean train(double expectedAccuracy){
+        double accuracy = 0.0;
+        int numberOfGoodPredictions;
+        int counter = 0;
+        boolean flag = true;
+
+        while(accuracy < expectedAccuracy){
+            if(counter > 500_000){
+                flag = false;
+                break;
+            }
+            numberOfGoodPredictions = learn();
+            accuracy = (numberOfGoodPredictions / (double) vectorXWithAnswer.size()) * 100;
+            System.out.println("Proba nr " + counter + "\n"
+                                + "dokladnosc: " + (accuracy) + "%");
+            counter++;
+        }
+
+        System.out.println();
+
+        return  flag;
+    }
+    public void test(){
+        lengthOfWeightVectorToOne();
+        double numberOfGoodPredictions = 0.0;
+        boolean flag;
+        for(TreeMap<Character, Double> tm: vectorXWithAnswer.keySet()){
+            int counter = 0;
+            flag = false;
+            Double [] vector = new Double[tm.size()];
+
+            for(Character character : tm.keySet()){
+                vector[counter++] = tm.get(character);
+            }
+
+            int y = scalar(vector);
+            int d = vectorXWithAnswer.get(tm).equals(language) ? 1 : 0;
+            if(y == d) {
+                numberOfGoodPredictions++;
+                flag = true;
+            }
+
+            System.out.println("Odpowiedz poprawna: " + vectorXWithAnswer.get(tm));
+            System.out.println("Odpowiedz perceptronu: " + y);
+            System.out.println("Czy porpawna: " + flag);
+            System.out.println("************************************");
+        }
+        double accuracy = numberOfGoodPredictions / vectorXWithAnswer.size();
+        System.out.println("Dokladnosc jaką osiągnieto: " + accuracy * 100);
+
+    }
