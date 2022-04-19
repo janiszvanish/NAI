@@ -23,9 +23,9 @@ public class Main {
 //        String testFileName = scanner.nextLine();
 //        System.out.println("Podaj nazwe pliku treningowego");
 //        String trainingFileName = scanner.nextLine();
-        System.out.println("Podaj parametr uczenia z przedziału (0;1)");
+        System.out.println("Podaj parametr uczenia z przedziału");
         double alpha = scanner.nextDouble();
-        System.out.println("Podaj próg aktywacji z przedziału (0;1)");
+        System.out.println("Podaj próg aktywacji z przedziału");
         double theta = scanner.nextDouble();
         System.out.println("Podaj oczekiwana dokladnosc");
         double expectedAccuracy = scanner.nextDouble();
@@ -53,6 +53,11 @@ public class Main {
                     trainingFileName = "train.txt";
                     flag = false;
                     break;
+                case 4:
+                    path = "D:\\studia\\2021-2022\\letni\\NAI\\Labolatoria\\Perceptron\\src\\data\\example2en";
+                    trainingFileName = "train.txt";
+                    flag = false;
+                    break;
                 default:
                     System.out.println("Podales bledna opcje");
                     System.out.println("Podaj nowy wybór");
@@ -76,19 +81,21 @@ public class Main {
         HashMap<Double[], String> trainingSet = dataProvider.extractData(dataProvider.getTrainingFile());
         HashMap<Double[], String> testingSet = dataProvider.extractData(dataProvider.getTestingFile());
 
+
         Perceptron perceptron = new Perceptron(alpha, theta, trainingSet, weights);
-        dataProvider.seeVector(testingSet);
+
         flag = perceptron.train(expectedAccuracy);
         System.out.println(perceptron);
         if(!flag){
             System.out.println("Nie udalo sie wytrenowac perceptronu :(");
+            System.out.println(perceptron.getMaxAccuracy());
             System.exit(0);
         }
         System.out.println("Yupiiiii udało się wytrenować perceptron!");
 
-        System.out.println("Podaj dokladnosc jaka oczekujesz od perceptronu");
-        expectedAccuracy = scanner.nextDouble();
-
+//        System.out.println("Podaj dokladnosc jaka oczekujesz od perceptronu");
+//        expectedAccuracy = scanner.nextDouble();
+        System.out.println("Zbiór testowy:");
         perceptron.setVectorXWithAnswer(testingSet);
         perceptron.test();
         System.out.println(perceptron);

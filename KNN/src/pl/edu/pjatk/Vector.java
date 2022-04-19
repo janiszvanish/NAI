@@ -4,9 +4,9 @@ public class Vector {
     private double distance;
     private String species;
 
-    public Vector(double distance, String predictedSpecies) {
+    public Vector(double distance, String species) {
         this.distance = distance;
-        this.species = predictedSpecies;
+        this.species = species;
     }
 
     public static double calcDistanceBetweenFlowers(Flower train, Flower test){
