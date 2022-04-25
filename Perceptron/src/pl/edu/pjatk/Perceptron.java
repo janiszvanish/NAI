@@ -32,10 +32,7 @@ public class Perceptron {
         for(int i = 0; i < weights.length; i++){
             y += weights[i] * x[i];
         }
-        if(y >= theta)
-            return 1;
-        else
-            return 0;
+        return y >= theta ? 1 : 0;
     }
 
     private int learn(){
@@ -85,12 +82,12 @@ public class Perceptron {
                     counterForMap = counter;
                 }
             }
-            if(counter % 10 == 0){
-                lengthOfWeightVectorToOne();
-                System.out.println(lengthOfVector());
-            }
+//            if(counter % 10 == 0){
+//                lengthOfWeightVectorToOne();
+//                System.out.println(lengthOfVector());
+//            }
         }
-        lengthOfWeightVectorToOne();
+        //lengthOfWeightVectorToOne();
         System.out.println();
 
         return flag;
@@ -101,7 +98,7 @@ public class Perceptron {
     }
 
     public void test(){
-        lengthOfWeightVectorToOne();
+//        lengthOfWeightVectorToOne();
         double numberOfGoodPredictions = 0.0;
         for(Double [] keys : vectorXWithAnswer.keySet()) {
             int y = scalar(keys);

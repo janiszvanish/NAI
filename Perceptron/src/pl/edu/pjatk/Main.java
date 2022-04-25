@@ -23,9 +23,9 @@ public class Main {
 //        String testFileName = scanner.nextLine();
 //        System.out.println("Podaj nazwe pliku treningowego");
 //        String trainingFileName = scanner.nextLine();
-        System.out.println("Podaj parametr uczenia z przedziału");
+        System.out.println("Podaj parametr uczenia");
         double alpha = scanner.nextDouble();
-        System.out.println("Podaj próg aktywacji z przedziału");
+        System.out.println("Podaj próg aktywacji");
         double theta = scanner.nextDouble();
         System.out.println("Podaj oczekiwana dokladnosc");
         double expectedAccuracy = scanner.nextDouble();
@@ -95,8 +95,8 @@ public class Main {
 
 //        System.out.println("Podaj dokladnosc jaka oczekujesz od perceptronu");
 //        expectedAccuracy = scanner.nextDouble();
-        System.out.println("Zbiór testowy:");
-        perceptron.setVectorXWithAnswer(testingSet);
+        System.out.println("\nZbiór testowy:");
+        //perceptron.setVectorXWithAnswer(testingSet);
         perceptron.test();
         System.out.println(perceptron);
 
